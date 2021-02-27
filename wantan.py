@@ -3,6 +3,7 @@
 import argparse
 
 from auth import auth
+from fetch import fetch
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -10,6 +11,9 @@ def parse_args():
 
     auth_group = subparsers.add_parser("auth", help="WaniKani API key management")
     auth.setup_args(auth_group)
+
+    fetch_group = subparsers.add_parser("fetch", help="Fetch WaniKani content")
+    fetch.setup_args(fetch_group)
 
     return parser.parse_args()
 
