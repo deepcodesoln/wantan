@@ -23,7 +23,6 @@ def level_range(s):
         raise ArgumentTypeError("Levels must be between 0 and 60 inclusive")
     if r.end < r.begin:
         raise ArgumentTypeError("End level must be greater than or equal to begin level")
-
     return r
 
 def setup_args(args):
