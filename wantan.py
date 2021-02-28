@@ -2,8 +2,8 @@
 
 import argparse
 
-from auth import auth
-from fetch import fetch
+import auth
+import fetch
 
 def parse_args():
     parser = argparse.ArgumentParser()

@@ -15,9 +15,22 @@ Managing your API key:
 
 ```sh
 # Non-interactive
-./wantan auth --store --user <you> --key <your_key>
+./wantan.py auth --store --user <you> --key <your_key>
 # Interactive
-./wantan auth --store --user <you>
+./wantan.py auth --store --user <you>
 
-./wantan auth --dump --user <you>
+./wantan.py auth --dump --user <you>
+```
+
+Fetching content:
+
+```sh
+# Get all kanji for level 1
+./wantan.py fetch --level 1 <you> kanji
+
+# Get all radicals for levels 5-10
+./wantan.py fetch --level 5-10 <you> radical
+
+# Get everything for level 20
+./wantan.py fetch --level 20 <you> all
 ```

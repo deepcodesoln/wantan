@@ -1,14 +1,18 @@
 import re
 import requests
 from argparse import ArgumentTypeError
-
 from collections import namedtuple
+
+import auth
+from subjects.subjects import Kanji, Radical, Vocabulary
 
 AuthPair = namedtuple("AuthPair", ["user", "key"])
 
 InclusiveRange = namedtuple("InclusiveRange", ["begin", "end"])
 
-ITEM_TYPES = ["kanji", "radical", "vocab"]
+BASE_URL = "https://api.wanikani.com/v2/"
+AUTH_HEADER = "Authorization: Bearer {}"
+ITEM_TYPES = ["kanji", "radical", "vocabulary"]
 
 def level_range(s):
     level_re = "(?P<begin>[0-9]+)(-(?P<end>[0-9]+))?"
@@ -27,11 +31,41 @@ def level_range(s):
 
 def setup_args(args):
     """Add our args to a subgroup of the main script's."""
-    args.add_argument("--type", choices=ITEM_TYPES + ["all"], nargs="+",
-            required=True,
+    args.add_argument("--level", type=level_range, default="1-60",
+            help="A level or a range of levels, inclusive, as '#-#'")
+    args.add_argument("user", help="The WaniKani user to transact as")
+    args.add_argument("type", choices=ITEM_TYPES + ["all"], nargs="+",
             help="The type of content to fetch; 'all' fetches every type")
-    args.add_argument("--level", type=level_range)
     args.set_defaults(func=main)
 
+def expand_levels(levels):
+    return list(range(levels.begin, levels.end + 1))
+
+def sanitize_types(types):
+    if "all" in types:
+        return ITEM_TYPES
+    s = set(types) # Remove duplicates.
+    return list(s)
+
+class BearerAuthentication(requests.auth.AuthBase):
+    def __init__(self, key):
+        self._key = key
+    def __call__(self, r):
+        r.headers["Authorization"] = f"Bearer {self._key}"
+        return r
+
 def main(args):
-    pass
+    bearer_auth = BearerAuthentication(auth.get_key(args.user))
+    params = {"levels": expand_levels(args.level), "types": sanitize_types(args.type)}
+    r = requests.get(BASE_URL + "subjects", params=params, auth=bearer_auth)
+
+    kanji = list()
+    radicals = list()
+    vocabulary = list()
+    for s in r.json()["data"]:
+        if s["object"] == "kanji":
+            kanji.append(Kanji.from_wanikani(s["data"]))
+        elif s["object"] == "radical":
+            radicals.append(Radical.from_wanikani(s["data"]))
+        elif s["object"] == "vocabulary":
+            vocabulary.append(Vocabulary.from_wanikani(s["data"]))
