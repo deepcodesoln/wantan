@@ -38,14 +38,14 @@ def setup_args(args):
             help="The type of content to fetch; 'all' fetches every type")
     args.set_defaults(func=main)
 
-def expand_levels(levels):
-    return list(range(levels.begin, levels.end + 1))
+def format_levels(levels):
+    return ",".join(map(str, list(range(levels.begin, levels.end + 1))))
 
-def sanitize_types(types):
+def format_types(types):
     if "all" in types:
-        return ITEM_TYPES
-    s = set(types) # Remove duplicates.
-    return list(s)
+        return ",".join(map(str, ITEM_TYPES))
+    else:
+        return ",".join(map(str, list(set(types)))) # Remove duplicates.
 
 class BearerAuthentication(requests.auth.AuthBase):
     def __init__(self, key):
@@ -56,16 +56,25 @@ class BearerAuthentication(requests.auth.AuthBase):
 
 def main(args):
     bearer_auth = BearerAuthentication(auth.get_key(args.user))
-    params = {"levels": expand_levels(args.level), "types": sanitize_types(args.type)}
+    params = {"levels": format_levels(args.level), "types": format_types(args.type)}
     r = requests.get(BASE_URL + "subjects", params=params, auth=bearer_auth)
 
     kanji = list()
     radicals = list()
     vocabulary = list()
-    for s in r.json()["data"]:
-        if s["object"] == "kanji":
-            kanji.append(Kanji.from_wanikani(s["data"]))
-        elif s["object"] == "radical":
-            radicals.append(Radical.from_wanikani(s["data"]))
-        elif s["object"] == "vocabulary":
-            vocabulary.append(Vocabulary.from_wanikani(s["data"]))
+    while True:
+        for s in r.json()["data"]:
+            if s["object"] == "kanji":
+                kanji.append(Kanji.from_wanikani(s["data"]))
+            elif s["object"] == "radical":
+                radicals.append(Radical.from_wanikani(s["data"]))
+            elif s["object"] == "vocabulary":
+                vocabulary.append(Vocabulary.from_wanikani(s["data"]))
+        next_url = r.json()["pages"]["next_url"]
+        if not next_url:
+            break
+        r = requests.get(next_url, auth=bearer_auth)
+
+    print(f"Num kanji: {len(kanji)}")
+    print(f"Num radicals: {len(radicals)}")
+    print(f"Num vocabulary: {len(vocabulary)}")

@@ -59,9 +59,10 @@ class Radical:
             if i["content_type"] == "image/svg+xml" and i["metadata"].get("inline_styles", False):
                 c.character_svg = i["url"]
                 break
-        assert(c.character_svg != "")
+        if c.character_svg == "":
+            print(f"Radical with slug '{json['slug']}' has no svg", file=sys.stderr)
         if c.characters is None or c.characters == "":
-            print(f"Radical with slug '{json['slug']}' has no characters!", file=sys.stderr)
+            print(f"Radical with slug '{json['slug']}' has no characters", file=sys.stderr)
         c.level = json["level"]
         c.meanings = [m["meaning"] for m in json["meanings"]]
         c.meaning_mnemonic = json["meaning_mnemonic"]
