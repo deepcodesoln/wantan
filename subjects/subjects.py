@@ -1,6 +1,19 @@
 import sys
 from collections import namedtuple
 
+class KanjiIterator:
+    def __init__(self, kanji):
+        self._values = iter(vars(kanji).values())
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        v = next(self._values)
+        if type(v) == list:
+            return ", ".join(v)
+        return v
+
 class Kanji:
     def __init__(self):
         self.characters = ""
@@ -13,6 +26,9 @@ class Kanji:
         self.meaning_hint = ""
         self.reading_mnemonic = ""
         self.reading_hint = ""
+
+    def csv_iter(self):
+        return KanjiIterator(self)
 
     @classmethod
     def from_wanikani(cls, json):

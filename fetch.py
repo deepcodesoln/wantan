@@ -1,3 +1,4 @@
+import csv
 import re
 import requests
 from argparse import ArgumentTypeError
@@ -75,6 +76,11 @@ def main(args):
             break
         r = requests.get(next_url, auth=bearer_auth)
 
-    print(f"Num kanji: {len(kanji)}")
-    print(f"Num radicals: {len(radicals)}")
-    print(f"Num vocabulary: {len(vocabulary)}")
+    #TODO(orphen) Allow command-line configuration of output directory.
+    with open("kanji.csv", "w", newline="") as kanji_csv:
+        csvwriter = csv.writer(kanji_csv, dialect="unix")
+        for k in kanji:
+            csvwriter.writerow(k.csv_iter())
+
+    #TODO(orphen) Write a CSV file for Radicals.
+    #TODO(orphen) Write a CSV file for Vocabulary.

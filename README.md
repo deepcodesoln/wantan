@@ -6,7 +6,7 @@ content and prepares it for use in Anki.
 # Dependencies
 
 - Active WaniKani API key
-- Python3
+- Python 3.7+ (for guaranteed insertion-ordered dicts)
 - (Python) keyring
 
 # Usage
@@ -34,3 +34,25 @@ Fetching content:
 # Get everything for level 20
 ./wantan.py fetch --level 20 <you> all
 ```
+
+# Importing to Anki
+
+When importing CSV files created by wantan, configure Anki to use a comma as a
+field separator and to allow HTML in fields.
+
+## Note Types
+
+Use notes with the following fields to import all data for the corresponding item.
+
+**Kanji**:
+
+1. Characters
+1. Level
+1. Meanings
+1. Readings Onyomi
+1. Readings Kunyomi
+1. Readings Nanori
+1. Meaning Mnemonic
+1. Meaning Hint
+1. Reading Mnemonic
+1. Reading Hint
