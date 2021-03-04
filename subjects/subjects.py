@@ -58,6 +58,19 @@ class Kanji:
                f"{self.reading_mnemonic}\n" +\
                f"{self.reading_hint}"
 
+class RadicalIterator:
+    def __init__(self, radical):
+        self._values = iter(vars(radical).values())
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        r = next(self._values)
+        if type(r) == list:
+            return ", ".join(r)
+        return r
+
 class Radical:
     def __init__(self):
         self.characters = ""
@@ -65,6 +78,9 @@ class Radical:
         self.level = 0
         self.meanings = [] # List of str.
         self.meaning_mnemonic = ""
+
+    def csv_iter(self):
+        return RadicalIterator(self)
 
     @classmethod
     def from_wanikani(cls, json):

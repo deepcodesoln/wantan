@@ -58,6 +58,12 @@ class BearerAuthentication(requests.auth.AuthBase):
         r.headers["Authorization"] = f"Bearer {self._key}"
         return r
 
+def write_csv_file(filename, csv_iterable):
+    with open(filename, "w", newline="") as csv_file:
+        csv_writer = csv.writer(csv_file, dialect="unix")
+        for i in csv_iterable:
+            csv_writer.writerow(i.csv_iter())
+
 def main(args):
     outdir = path.join(getcwd(), args.out)
     makedirs(outdir, exist_ok=True)
@@ -82,10 +88,8 @@ def main(args):
             break
         r = requests.get(next_url, auth=bearer_auth)
 
-    with open(path.join(outdir, "kanji.csv"), "w", newline="") as kanji_csv:
-        csvwriter = csv.writer(kanji_csv, dialect="unix")
-        for k in kanji:
-            csvwriter.writerow(k.csv_iter())
+    write_csv_file(path.join(outdir, "kanji.csv"), kanji)
+    write_csv_file(path.join(outdir, "radicals.csv"), radicals)
 
     #TODO(orphen) Write a CSV file for Radicals.
     #TODO(orphen) Write a CSV file for Vocabulary.
