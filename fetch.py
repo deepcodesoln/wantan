@@ -3,6 +3,7 @@ import re
 import requests
 from argparse import ArgumentTypeError
 from collections import namedtuple
+from os import getcwd, makedirs, path
 
 import auth
 from subjects.subjects import Kanji, Radical, Vocabulary
@@ -33,7 +34,9 @@ def level_range(s):
 def setup_args(args):
     """Add our args to a subgroup of the main script's."""
     args.add_argument("--level", type=level_range, default="1-60",
-            help="A level or a range of levels, inclusive, as '#-#'")
+            help="A level ('#') or an inclusive range ('#-#')s; default: '1-60'")
+    args.add_argument("--out", default="./",
+            help="The output directory to write files in; default: './'")
     args.add_argument("user", help="The WaniKani user to transact as")
     args.add_argument("type", choices=ITEM_TYPES + ["all"], nargs="+",
             help="The type of content to fetch; 'all' fetches every type")
@@ -56,6 +59,9 @@ class BearerAuthentication(requests.auth.AuthBase):
         return r
 
 def main(args):
+    outdir = path.join(getcwd(), args.out)
+    makedirs(outdir, exist_ok=True)
+
     bearer_auth = BearerAuthentication(auth.get_key(args.user))
     params = {"levels": format_levels(args.level), "types": format_types(args.type)}
     r = requests.get(BASE_URL + "subjects", params=params, auth=bearer_auth)
@@ -76,8 +82,7 @@ def main(args):
             break
         r = requests.get(next_url, auth=bearer_auth)
 
-    #TODO(orphen) Allow command-line configuration of output directory.
-    with open("kanji.csv", "w", newline="") as kanji_csv:
+    with open(path.join(outdir, "kanji.csv"), "w", newline="") as kanji_csv:
         csvwriter = csv.writer(kanji_csv, dialect="unix")
         for k in kanji:
             csvwriter.writerow(k.csv_iter())
