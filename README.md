@@ -44,10 +44,18 @@ field separator and to allow HTML in fields.
 
 Use notes with the following fields to import all data for the corresponding item.
 
+Each item features a field called `sort_field`. This member is used for sorting
+in Anki. It is formatted as `<level>_(0|1|2)`, where `level` is the item's
+corresponding WaniKani level, 0 indicates a radical, 1 indicates kanji, and 2
+indicates vocabulary. With this schema, we can group all items of the same level
+and prioritize radicals, then kanji, and then vocabulary in Anki as is done on
+WaniKani. `sort_field` is not meant to be rendered in cards.
+
 **Kanji**:
 
 1. Characters
 1. Level
+1. Sort Field
 1. Meanings
 1. Readings Onyomi
 1. Readings Kunyomi
@@ -62,6 +70,7 @@ Use notes with the following fields to import all data for the corresponding ite
 1. Characters
 1. Character SVG
 1. Level
+1. Sort Field
 1. Meanings
 1. Meaning Mnemonic
 
@@ -69,6 +78,7 @@ Use notes with the following fields to import all data for the corresponding ite
 
 1. Characters
 1. Level
+1. Sort Field
 1. Meanings
 1. Rreadings
 1. Parts of Speech

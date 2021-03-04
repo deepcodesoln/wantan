@@ -18,6 +18,7 @@ class Kanji:
     def __init__(self):
         self.characters = ""
         self.level = 0
+        self.sort_field = ""
         self.meanings = [] # List of str.
         self.readings_onyomi = [] # List of str.
         self.readings_kunyomi = [] # List of str.
@@ -36,6 +37,7 @@ class Kanji:
         c = cls()
         c.characters = json["characters"]
         c.level = json["level"]
+        c.sort_field = str(c.level) + "_1"
         c.meanings = [m["meaning"] for m in json["meanings"]]
         c.readings_onyomi = [r["reading"] for r in json["readings"] if r["type"] == "onyomi"]
         c.readings_kunyomi = [r["reading"] for r in json["readings"] if r["type"] == "kunyomi"]
@@ -76,6 +78,7 @@ class Radical:
         self.characters = ""
         self.character_svg = ""
         self.level = 0
+        self.sort_field = ""
         self.meanings = [] # List of str.
         self.meaning_mnemonic = ""
 
@@ -96,6 +99,7 @@ class Radical:
         if c.characters is None or c.characters == "":
             print(f"Radical with slug '{json['slug']}' has no characters", file=sys.stderr)
         c.level = json["level"]
+        c.sort_field = str(c.level) + "_0"
         c.meanings = [m["meaning"] for m in json["meanings"]]
         c.meaning_mnemonic = json["meaning_mnemonic"]
         return c
@@ -138,6 +142,7 @@ class Vocabulary:
     def __init__(self):
         self.characters = ""
         self.level = 0
+        self.sort_field = ""
         self.meanings = [] # List of str.
         self.readings = [] # List of str.
         self.parts_of_speech = [] # List of str.
@@ -153,6 +158,7 @@ class Vocabulary:
         c = cls()
         c.characters = json["characters"]
         c.level = json["level"]
+        c.sort_field = str(c.level) + "_2"
         c.meanings = [m["meaning"] for m in json["meanings"]]
         c.readings = [r["reading"] for r in json["readings"]]
         c.parts_of_speech = json["parts_of_speech"]
