@@ -92,5 +92,4 @@ def main(args):
 
     write_csv_file(path.join(outdir, "kanji.csv"), kanji)
     write_csv_file(path.join(outdir, "radicals.csv"), radicals)
-
-    #TODO(orphen) Write a CSV file for Vocabulary.
+    write_csv_file(path.join(outdir, "vocabulary.csv"), vocabulary)

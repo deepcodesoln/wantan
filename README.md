@@ -65,6 +65,17 @@ Use notes with the following fields to import all data for the corresponding ite
 1. Meanings
 1. Meaning Mnemonic
 
+**Vocabulary**:
+
+1. Characters
+1. Level
+1. Meanings
+1. Rreadings
+1. Parts of Speech
+1. Meaning Mnemonic
+1. Reading Mnemonic
+1. Context Sentences
+
 ## Card Types
 
 Not all radicals have printable characters, but all have renderable SVGs.

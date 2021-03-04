@@ -107,6 +107,31 @@ class Radical:
                f"{self.meanings}\n" +\
                f"{self.meaning_mnemonic}"
 
+class VocabularyIterator:
+    def __init__(self, vocabulary):
+        self._values = iter(vars(vocabulary).values())
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        v = next(self._values)
+        if type(v) == list:
+            if type(v[0]) == SentencePair:
+                string = ""
+                first = True
+                nl = "<br />" # Anki deals in HTML.
+                for pair in v:
+                    if not first:
+                        string += nl + nl
+                    else:
+                        first = False
+                    string += pair.en + nl + pair.jp
+                    return string
+            else:
+                return ", ".join(v)
+        return v
+
 SentencePair = namedtuple("SentencePair", ["en", "jp"])
 
 class Vocabulary:
@@ -119,6 +144,9 @@ class Vocabulary:
         self.meaning_mnemonic = ""
         self.reading_mnemonic = ""
         self.context_sentences = [] # List of SentencePair.
+
+    def csv_iter(self):
+        return VocabularyIterator(self)
 
     @classmethod
     def from_wanikani(cls, json):
