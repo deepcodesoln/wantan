@@ -66,10 +66,10 @@ class RadicalIterator:
         return self
 
     def __next__(self):
-        r = next(self._values)
-        if type(r) == list:
-            return ", ".join(r)
-        return r
+        v = next(self._values)
+        if type(v) == list:
+            return ", ".join(v)
+        return v
 
 class Radical:
     def __init__(self):
