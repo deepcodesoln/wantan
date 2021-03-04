@@ -38,7 +38,7 @@ class Kanji:
         c = cls()
         c.characters = json["characters"]
         c.level = json["level"]
-        c.sort_field = str(c.level) + "_1"
+        c.sort_field = f"{c.level:02}" + "_1"
         c.meanings = [m["meaning"] for m in json["meanings"]]
         c.readings_onyomi = [r["reading"] for r in json["readings"] if r["type"] == "onyomi"]
         c.readings_kunyomi = [r["reading"] for r in json["readings"] if r["type"] == "kunyomi"]
@@ -100,7 +100,7 @@ class Radical:
         if c.characters is None or c.characters == "":
             logging.warning(f"Radical with slug '{json['slug']}' has no characters")
         c.level = json["level"]
-        c.sort_field = str(c.level) + "_0"
+        c.sort_field = f"{c.level:02}" + "_0"
         c.meanings = [m["meaning"] for m in json["meanings"]]
         c.meaning_mnemonic = json["meaning_mnemonic"]
         return c
@@ -159,7 +159,7 @@ class Vocabulary:
         c = cls()
         c.characters = json["characters"]
         c.level = json["level"]
-        c.sort_field = str(c.level) + "_2"
+        c.sort_field = f"{c.level:02}" + "_2"
         c.meanings = [m["meaning"] for m in json["meanings"]]
         c.readings = [r["reading"] for r in json["readings"]]
         c.parts_of_speech = json["parts_of_speech"]
