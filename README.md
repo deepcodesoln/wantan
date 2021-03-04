@@ -33,6 +33,9 @@ Fetching content:
 
 # Get everything for level 20
 ./wantan.py fetch --out ./out --level 20 <you> all
+
+# Get everything; we recommend you print diagnostics since this takes some time.
+./wantan.py fetch --log-level info --out ./out <you> all
 ```
 
 # Importing to Anki

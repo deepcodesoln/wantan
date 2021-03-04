@@ -1,4 +1,5 @@
 import csv
+import logging
 import re
 import requests
 from argparse import ArgumentTypeError
@@ -15,6 +16,13 @@ InclusiveRange = namedtuple("InclusiveRange", ["begin", "end"])
 BASE_URL = "https://api.wanikani.com/v2/"
 AUTH_HEADER = "Authorization: Bearer {}"
 ITEM_TYPES = ["kanji", "radical", "vocabulary"]
+LOG_LEVELS = {
+        "debug": logging.DEBUG,
+        "info": logging.INFO,
+        "warning": logging.WARNING,
+        "error": logging.ERROR,
+        "critical": logging.CRITICAL,
+}
 
 def level_range(s):
     level_re = "(?P<begin>[0-9]+)(-(?P<end>[0-9]+))?"
@@ -37,6 +45,9 @@ def setup_args(args):
             help="A level ('#') or an inclusive range ('#-#')s; default: '1-60'")
     args.add_argument("--out", default="./",
             help="The output directory to write files in; default: './'")
+    args.add_argument("--log-level", default="warning",
+            choices=[k for k in LOG_LEVELS.keys()],
+            help="The verbosity of this tool; default: warning")
     args.add_argument("user", help="The WaniKani user to transact as")
     args.add_argument("type", choices=ITEM_TYPES + ["all"], nargs="+",
             help="The type of content to fetch; 'all' fetches every type")
@@ -65,6 +76,8 @@ def write_csv_file(filename, csv_iterable):
             csv_writer.writerow(i.csv_iter())
 
 def main(args):
+    logging.basicConfig(level=LOG_LEVELS[args.log_level])
+
     outdir = path.join(getcwd(), args.out)
     makedirs(outdir, exist_ok=True)
 
@@ -75,6 +88,7 @@ def main(args):
     kanji = list()
     radicals = list()
     vocabulary = list()
+    total_count = 0
     while True:
         for s in r.json()["data"]:
             if s["object"] == "kanji":
@@ -86,6 +100,10 @@ def main(args):
                 radicals.append(radical)
             elif s["object"] == "vocabulary":
                 vocabulary.append(Vocabulary.from_wanikani(s["data"]))
+
+        total_count += r.json()["total_count"]
+        logging.info(f"Processed {total_count} items so far...")
+
         next_url = r.json()["pages"]["next_url"]
         if not next_url:
             break

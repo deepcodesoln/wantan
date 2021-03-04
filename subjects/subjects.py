@@ -1,3 +1,4 @@
+import logging
 import sys
 from collections import namedtuple
 
@@ -95,9 +96,9 @@ class Radical:
                 c.character_svg = i["url"]
                 break
         if c.character_svg == "":
-            print(f"Radical with slug '{json['slug']}' has no svg", file=sys.stderr)
+            logging.warning(f"Radical with slug '{json['slug']}' has no svg")
         if c.characters is None or c.characters == "":
-            print(f"Radical with slug '{json['slug']}' has no characters", file=sys.stderr)
+            logging.warning(f"Radical with slug '{json['slug']}' has no characters")
         c.level = json["level"]
         c.sort_field = str(c.level) + "_0"
         c.meanings = [m["meaning"] for m in json["meanings"]]
