@@ -81,7 +81,8 @@ def main(args):
                 kanji.append(Kanji.from_wanikani(s["data"]))
             elif s["object"] == "radical":
                 radical = Radical.from_wanikani(s["data"])
-                radical.character_svg = requests.get(radical.character_svg).text
+                if radical.character_svg:
+                    radical.character_svg = requests.get(radical.character_svg).text
                 radicals.append(radical)
             elif s["object"] == "vocabulary":
                 vocabulary.append(Vocabulary.from_wanikani(s["data"]))
