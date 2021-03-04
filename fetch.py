@@ -80,7 +80,9 @@ def main(args):
             if s["object"] == "kanji":
                 kanji.append(Kanji.from_wanikani(s["data"]))
             elif s["object"] == "radical":
-                radicals.append(Radical.from_wanikani(s["data"]))
+                radical = Radical.from_wanikani(s["data"])
+                radical.character_svg = requests.get(radical.character_svg).text
+                radicals.append(radical)
             elif s["object"] == "vocabulary":
                 vocabulary.append(Vocabulary.from_wanikani(s["data"]))
         next_url = r.json()["pages"]["next_url"]
@@ -91,5 +93,4 @@ def main(args):
     write_csv_file(path.join(outdir, "kanji.csv"), kanji)
     write_csv_file(path.join(outdir, "radicals.csv"), radicals)
 
-    #TODO(orphen) Write a CSV file for Radicals.
     #TODO(orphen) Write a CSV file for Vocabulary.

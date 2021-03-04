@@ -56,3 +56,32 @@ Use notes with the following fields to import all data for the corresponding ite
 1. Meaning Hint
 1. Reading Mnemonic
 1. Reading Hint
+
+**Radicals**:
+
+1. Characters
+1. Character SVG
+1. Level
+1. Meanings
+1. Meaning Mnemonic
+
+## Card Types
+
+Not all radicals have printable characters, but all have renderable SVGs.
+Without additional styling, the SVGs will scale to the size of the card.
+Consider adding something like the following to your radical card type to
+constrain the size of the SVG.
+
+```css
+svg {
+  width: 100px;
+  height: 100px;
+}
+```
+
+If you want to hide the text characters if you render SVGs in the same card, you
+can conditionally render the characters based on the SVG presence as follows:
+
+```
+{{^Character SVG}}{{Characters}}{{/Character SVG}}
+```
