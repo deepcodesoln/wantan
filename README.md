@@ -133,3 +133,7 @@ Front:
 Back:
 
 ![back of card](/docs/img/2021-03-07-vocabulary-back.png)
+
+# License
+
+MIT License; see LICENSE.
