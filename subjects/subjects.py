@@ -123,16 +123,13 @@ class VocabularyIterator:
         v = next(self._values)
         if type(v) == list:
             if type(v[0]) == SentencePair:
+                div_en = '<div class="context-sentence-en">'
+                div_jp = '<div class="context-sentence-jp">'
+                div_end = "</div>"
                 string = ""
-                first = True
-                nl = "<br />" # Anki deals in HTML.
                 for pair in v:
-                    if not first:
-                        string += nl + nl
-                    else:
-                        first = False
-                    string += pair.en + nl + pair.jp
-                    return string
+                    string += div_en + pair.en + div_end + div_jp + pair.jp + div_end
+                return string
             else:
                 return ", ".join(v)
         return v

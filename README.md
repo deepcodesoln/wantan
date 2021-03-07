@@ -89,6 +89,11 @@ WaniKani. `sort_field` is not meant to be rendered in cards.
 1. Reading Mnemonic
 1. Context Sentences
 
+Each English sentence in a Vocabulary item's `Context Sentences` is wrapped in
+`<div class="context-sentence-en"></div>` and each Japanese sentence in a
+similar `div` with class `context-sentence-jp`. This allows you to style
+this content in Anki based on sentence language.
+
 ## Card Types
 
 Not all radicals have printable characters, but all have renderable SVGs.
