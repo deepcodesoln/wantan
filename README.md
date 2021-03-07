@@ -94,12 +94,11 @@ Each English sentence in a Vocabulary item's `Context Sentences` is wrapped in
 similar `div` with class `context-sentence-jp`. This allows you to style
 this content in Anki based on sentence language.
 
-## Card Types
+## Formatting and Styling Cards
 
-Not all radicals have printable characters, but all have renderable SVGs.
-Without additional styling, the SVGs will scale to the size of the card.
-Consider adding something like the following to your radical card type to
-constrain the size of the SVG.
+If you render SVGs for cards which have them (ex: most Radical cards), without
+additional styling, the SVGs will scale to the size of the card. Consider
+constraining the size of SVGs with a custom style; for example:
 
 ```css
 svg {
@@ -114,3 +113,13 @@ can conditionally render the characters based on the SVG presence as follows:
 ```
 {{^Character SVG}}{{Characters}}{{/Character SVG}}
 ```
+
+Below is a card arrangement based on some simple HTML and CSS.
+
+Front:
+
+![front of card](docs/img/2021-03-07-vocabulary-front.png)
+
+Back:
+
+![back of card](/docs/img/2021-03-07-vocabulary-back.png)
