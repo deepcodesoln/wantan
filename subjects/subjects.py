@@ -76,6 +76,7 @@ class RadicalIterator:
 
 class Radical:
     def __init__(self):
+        self.slug = ""
         self.characters = ""
         self.character_svg = ""
         self.level = 0
@@ -90,9 +91,12 @@ class Radical:
     def from_wanikani(cls, json):
         """json is the r["data"][n]["data"] of a response from WaniKani."""
         c = cls()
+        c.slug = json["slug"]
         c.characters = json["characters"]
         for i in json["character_images"]:
-            if i["content_type"] == "image/svg+xml" and i["metadata"].get("inline_styles", False):
+            if i["content_type"] == "image/svg+xml" and\
+               "inline_styles" in i["metadata"] and\
+               i["metadata"]["inline_styles"] == False:
                 c.character_svg = i["url"]
                 break
         if c.character_svg == "":

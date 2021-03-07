@@ -70,12 +70,15 @@ WaniKani. `sort_field` is not meant to be rendered in cards.
 
 **Radicals**:
 
+1. Slug
 1. Characters
 1. Character SVG
 1. Level
 1. Sort Field
 1. Meanings
 1. Meaning Mnemonic
+
+We prepare `Slug` as the first field since `Characters` can be empty for radicals.
 
 **Vocabulary**:
 
@@ -98,12 +101,19 @@ this content in Anki based on sentence language.
 
 If you render SVGs for cards which have them (ex: most Radical cards), without
 additional styling, the SVGs will scale to the size of the card. Consider
-constraining the size of SVGs with a custom style; for example:
+constraining the size of SVGs with a custom style. Also, we download the
+non-styled SVGs, so you will need to provide styling to define stroke size,
+color, etc. Consider the following:
 
 ```css
 svg {
   width: 100px;
   height: 100px;
+  fill: none;
+  stroke: #000000;
+  stroke-width: 68px;
+  stroke-linecap: square;
+  stroke-miterlimit: 2;
 }
 ```
 

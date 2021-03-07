@@ -90,6 +90,10 @@ def main(args):
     vocabulary = list()
     total_count = 0
     while True:
+        new_ammount = r.json()["total_count"]
+        logging.info(f"Processing next {new_ammount} items ({total_count} so far)")
+        total_count += new_ammount
+
         for s in r.json()["data"]:
             if s["object"] == "kanji":
                 kanji.append(Kanji.from_wanikani(s["data"]))
@@ -101,14 +105,15 @@ def main(args):
             elif s["object"] == "vocabulary":
                 vocabulary.append(Vocabulary.from_wanikani(s["data"]))
 
-        total_count += r.json()["total_count"]
-        logging.info(f"Processed {total_count} items so far...")
 
         next_url = r.json()["pages"]["next_url"]
         if not next_url:
             break
         r = requests.get(next_url, auth=bearer_auth)
 
-    write_csv_file(path.join(outdir, "kanji.csv"), kanji)
-    write_csv_file(path.join(outdir, "radicals.csv"), radicals)
-    write_csv_file(path.join(outdir, "vocabulary.csv"), vocabulary)
+    if "all" in args.type or "kanji" in args.type:
+        write_csv_file(path.join(outdir, "kanji.csv"), kanji)
+    if "all" in args.type or "radical" in args.type:
+        write_csv_file(path.join(outdir, "radicals.csv"), radicals)
+    if "all" in args.type or "vocabulary" in args.type:
+        write_csv_file(path.join(outdir, "vocabulary.csv"), vocabulary)
