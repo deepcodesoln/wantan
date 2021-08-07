@@ -1,6 +1,6 @@
 # Wantan
 
-The **Wan**iKani **T**o **An**ki tool. This tool fetches WaniKani
+The <u>Wan</u>iKani <u>T</u>o <u>An</u>ki tool. This tool fetches WaniKani
 content and prepares it for use in Anki.
 
 # Dependencies
