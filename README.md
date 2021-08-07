@@ -7,7 +7,7 @@ content and prepares it for use in Anki.
 
 - Active WaniKani API key
 - Python 3.7+ (for guaranteed insertion-ordered dicts)
-- (Python) keyring
+- (Python3) keyring
 
 # Usage
 
@@ -15,27 +15,27 @@ Managing your API key:
 
 ```sh
 # Non-interactive
-./wantan.py auth --store --user <you> --key <your_key>
+./wantan.py auth --store <wanikani_user_name> --key <wanikani_api_key>
 # Interactive
-./wantan.py auth --store --user <you>
+./wantan.py auth --store <wanikani_user_name>
 
-./wantan.py auth --dump --user <you>
+./wantan.py auth --dump <wanikani_user_name>
 ```
 
 Fetching content:
 
 ```sh
 # Get all kanji for level 1
-./wantan.py fetch --out ./out --level 1 <you> kanji
+./wantan.py fetch --out ./out --level 1 <wanikani_user_name> kanji
 
 # Get all radicals for levels 5-10
-./wantan.py fetch --out ./out --level 5-10 <you> radical
+./wantan.py fetch --out ./out --level 5-10 <wanikani_user_name> radical
 
 # Get everything for level 20
-./wantan.py fetch --out ./out --level 20 <you> all
+./wantan.py fetch --out ./out --level 20 <wanikani_user_name> all
 
 # Get everything; we recommend you print diagnostics since this takes some time.
-./wantan.py fetch --log-level info --out ./out <you> all
+./wantan.py fetch --log-level info --out ./out <wanikani_user_name> all
 ```
 
 # Importing to Anki

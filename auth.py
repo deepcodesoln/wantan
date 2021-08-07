@@ -10,9 +10,9 @@ def setup_args(args):
             help="Dump the API key associated with a username")
     auth_verbs.add_argument("--store", action="store_true",
             help="Store an API key associated with a username")
-    args.add_argument("--user", required=True,
-            help="The username associated with the API key")
     args.add_argument("--key", help="The API key to store")
+    args.add_argument("user",
+            help="The username associated with the API key")
     args.set_defaults(func=main)
 
 def get_key(user):
