@@ -7,7 +7,7 @@ content and prepares it for use in Anki.
 
 - Active WaniKani API key
 - Python 3.7+ (for guaranteed insertion-ordered dicts)
-- `pip3 install keyring requests`
+- `pip3 install -r requirements.txt`
 
 # Usage
 
